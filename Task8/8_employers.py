@@ -14,11 +14,11 @@ class Employers:
                 return False
         self.__employees.append(
             {
-                "id": 1,
-                "name": "Мария",
-                "position": "Разработчик",
-                "salary": 100000,
-                "department": "IT"
+                "id": self.__id,
+                "name": name,
+                "position": position,
+                "salary": salary,
+                "department": department
             }
         )
         self.__id += 1
