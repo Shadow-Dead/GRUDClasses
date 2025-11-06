@@ -1,5 +1,4 @@
 from Task1.Models.Task import Task
-
 class TaskControllers:
     obj = Task()
     @classmethod
