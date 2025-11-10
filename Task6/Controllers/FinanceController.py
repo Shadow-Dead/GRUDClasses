@@ -37,7 +37,7 @@ class FinanceController:
         return lst
 
 if __name__ == "__main__":
-    print(FinanceController.add(5000,"Еда","2024-01-23","Ресторан"))
+    print(FinanceController.add(2000,"Еда","2024-01-13","Магазин"))
     print(FinanceController.get())
     print(FinanceController.amount_by_category("Еда"))
     print(FinanceController.spending_by_time("2024-01-10","2024-01-30"))

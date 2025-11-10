@@ -1,3 +1,10 @@
 from Task3.Models.BaseModel import *
 
-class Shop(Model):
+class Shop(BaseModel):
+    id = PrimaryKeyField()
+    product = CharField()
+    quantity = IntegerField()
+    bought = BooleanField(default=False)
+
+if __name__ == "__main__":
+    mysql_db.create_tables([Shop])
