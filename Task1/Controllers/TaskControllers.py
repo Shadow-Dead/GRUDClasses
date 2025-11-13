@@ -14,7 +14,7 @@ class TaskControllers:
         return cls.obj.tasks
 
     @classmethod
-    def completed(cls,id):
+    def __main__(cls,id):
         for i in cls.get():
             if i['id'] == id:
                 i["completed"] = True
