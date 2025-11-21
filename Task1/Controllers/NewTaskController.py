@@ -13,8 +13,8 @@ class TaskController:
     Model.select(), for executing SELECT queries
     """
     @classmethod
-    def add(cls,task):
-        Task.create(task=task)
+    def add(cls,task,status=False):
+        Task.create(task=task,status=status)
     @classmethod
     def get(cls):
         return Task.select()

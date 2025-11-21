@@ -1,29 +1,85 @@
-import tkinter
+from time import sleep
 from tkinter import *
 from tkinter import ttk
 
 from Task1.Controllers.NewTaskController import *
+from Task1.Views.AddView import AddView
+
 
 class TaskView(Tk):
+
     def __init__(self):
         super().__init__()
-        self.title("Моя задачи")
-        self.geometry("500x800")
+        self.title("Список задач")
+        self.geometry("1500x500")
 
-        self.frame_add = ttk.Frame(self, borderwidth=1, relief=SOLID, padding=[10,10])
-        self.frame_add.pack(anchor='center', fill=X, padx=10, pady=10)
-        self.add_title = ttk.Label(self.frame_add, text="Добавить задачу")
-        self.add_title.pack()
-
-        self.task = ttk.Label(self.frame_add,text="Введите задачу")
+        self.task = ttk.Entry()
         self.task.pack()
-        self.unput_task = ttk.Entry(self.frame_add)
-        self.unput_task.pack()
+        # self.task.insert()
 
-        self.status = tkinter.Listbox(self.frame_add,text="статус")
+        self.status_lst = ["Не сделано","Сделано"]
+        self.status_lst_var = [0,1]
+        self.status = ttk.Combobox(textvariable=self.status_lst_var,values=self.status_lst,state="readonly")
         self.status.pack()
-        self.unput_status = ttk.Entry(self.frame_add)
-        self.unput_status.pack()
+
+        self.update = ttk.Button(text="Обновить",command=self.update)
+        # self.update.pack(anchor="s")
+        self.update.pack()
+
+        def test(event):
+            values = self.tree.item(self.tree.focus(), "values", )
+            print(values[0])
+
+        # table
+        self.frame_table = ttk.Frame(self, borderwidth=1, relief="solid", padding=[10, 10])
+        self.frame_table.pack(anchor='center', fill="x", padx=10, pady=10)
+        columns = ("id", "task", "status")
+        self.tree = ttk.Treeview(self.frame_table, columns=columns, show="headings")
+        self.tree.pack(fill="both", expand=1)
+        self.tree.bind("<Button-1>", test)
+        self.table()
+
+        self.delete = ttk.Button(text="Удалить",command=self.delete)
+        # self.delete.pack(anchor="sw")
+        self.delete.pack()
+
+        self.add = ttk.Button(text="Добавить",command=self.add)
+        # self.add.pack(anchor="se")
+        self.add.pack()
+
+
+    def delete(self):
+        values=self.tree.item(self.tree.focus(),"values",)
+        TaskController.delete(values[0])
+        self.table()
+
+    def update(self):
+        values=self.tree.item(self.tree.focus(),"values",)
+        print(values[0])
+        self.table()
+
+    def add(self):
+        window = AddView()
+    def table(self):
+        for i in self.tree.get_children():
+            self.tree.delete(i)
+
+        tasks = TaskController.get()
+        lst = []
+        for i in tasks:
+            lst.append(
+                (
+                    i.id,  # id записи
+                    i.task,  # значение записи
+                    i.completed,
+                )
+            )
+        self.tree.heading("id", text="#")
+        self.tree.heading("task", text="Задача")
+        self.tree.heading("status", text="Статус")
+        for i in lst:
+            self.tree.insert("","end",values=i)
+
 if __name__ == "__main__":
     window = TaskView()
     window.mainloop()
