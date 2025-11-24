@@ -12,9 +12,12 @@ class GymController:
         return GymModel.select()
     @classmethod
     def week_statistic(cls):
+        cal=0
         today = datetime.datetime.now().date()
         week = today - timedelta(days=7)
-        return GymModel.select().where((week <= GymModel.date) & (GymModel.date <= today))
+        for i in GymModel.select().where((week <= GymModel.date) & (GymModel.date <= today)):
+            cal+=i.calories
+        return cal
     @classmethod
     def find_by_type(cls,type):
         return GymModel.select().where(GymModel.type==type)
@@ -31,8 +34,9 @@ if __name__ == "__main__":
     for i in GymController.get():
         print(i.id,i.date,i.type,i.duration,i.calories,i.notes)
     print("========================")
-    for i in GymController.week_statistic():
-        print(i.id,i.date,i.type,i.duration,i.calories,i.notes)
+    print(GymController.week_statistic())
+    # for i in GymController.week_statistic():
+        # print(i.id,i.date,i.type,i.duration,i.calories,i.notes)
     print("========================")
     for i in GymController.find_by_type('отжимания'):
         print(i.id,i.date,i.type,i.duration,i.calories,i.notes)

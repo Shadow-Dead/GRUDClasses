@@ -15,15 +15,12 @@ class AddView(Tk):
         self.add_title.pack()
 
         # Task name
-        self.task = ttk.Label(self.frame_add,text="Введите задачу")
-        self.task.pack()
         self.input_task = ttk.Entry(self.frame_add)
         self.input_task.pack()
 
         # Combobox
-        self.status_lst = ["Не сделано","Сделано"]
-        self.status_lst_var = [0,1]
-        self.status = ttk.Combobox(self.frame_add,textvariable=self.status_lst_var,values=self.status_lst,state="readonly")
+        self.status_lst = [False, True]
+        self.status = ttk.Combobox(values=self.status_lst, state="readonly")
         self.status.pack()
 
         # button
@@ -37,7 +34,7 @@ class AddView(Tk):
         print(self.status.get())
         TaskController.add(
             task=self.input_task.get(),
-            status=self.status.get(),
+            status=self.status.current(),
         )
 
 if __name__ == "__main__":

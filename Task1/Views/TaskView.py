@@ -1,4 +1,3 @@
-from time import sleep
 from tkinter import *
 from tkinter import ttk
 
@@ -11,24 +10,28 @@ class TaskView(Tk):
     def __init__(self):
         super().__init__()
         self.title("Список задач")
+        self.id=0
         self.geometry("1500x500")
 
         self.task = ttk.Entry()
         self.task.pack()
         # self.task.insert()
 
-        self.status_lst = ["Не сделано","Сделано"]
-        self.status_lst_var = [0,1]
-        self.status = ttk.Combobox(textvariable=self.status_lst_var,values=self.status_lst,state="readonly")
+        self.status_lst = [False,True]
+        self.status = ttk.Combobox(values=self.status_lst,state="readonly")
         self.status.pack()
 
-        self.update = ttk.Button(text="Обновить",command=self.update)
+        self.update = ttk.Button(text="Изменить",command=self.update)
         # self.update.pack(anchor="s")
         self.update.pack()
 
         def test(event):
             values = self.tree.item(self.tree.focus(), "values", )
-            print(values[0])
+            self.id = values[0]
+            # print(values[0])
+            self.task.delete(0,999)
+            self.task.insert(0, values[1])
+            self.status.set(values[2])
 
         # table
         self.frame_table = ttk.Frame(self, borderwidth=1, relief="solid", padding=[10, 10])
@@ -36,7 +39,7 @@ class TaskView(Tk):
         columns = ("id", "task", "status")
         self.tree = ttk.Treeview(self.frame_table, columns=columns, show="headings")
         self.tree.pack(fill="both", expand=1)
-        self.tree.bind("<Button-1>", test)
+        self.tree.bind("<ButtonRelease-1>", test)
         self.table()
 
         self.delete = ttk.Button(text="Удалить",command=self.delete)
@@ -54,9 +57,14 @@ class TaskView(Tk):
         self.table()
 
     def update(self):
-        values=self.tree.item(self.tree.focus(),"values",)
-        print(values[0])
+        # values=self.tree.item(self.tree.focus(),"values",)
+        # print(values[0])
+        if self.id == 0:
+            return None
+        TaskController.update(self.id,task=self.task.get(),completed=self.status.current())
+        self.task.get()
         self.table()
+        return True
 
     def add(self):
         window = AddView()

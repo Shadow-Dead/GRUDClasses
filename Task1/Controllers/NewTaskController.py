@@ -14,7 +14,7 @@ class TaskController:
     """
     @classmethod
     def add(cls,task,status=False):
-        Task.create(task=task,status=status)
+        Task.create(task=task,completed=status)
     @classmethod
     def get(cls):
         return Task.select()
