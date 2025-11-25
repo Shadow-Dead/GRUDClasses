@@ -20,7 +20,7 @@ class AddView(Tk):
 
         # Combobox
         self.status_lst = [False, True]
-        self.status = ttk.Combobox(values=self.status_lst, state="readonly")
+        self.status = ttk.Combobox(self.frame_add, values=self.status_lst, state="readonly")
         self.status.pack()
 
         # button
@@ -30,8 +30,9 @@ class AddView(Tk):
 
 
     def add(self):
-        print(self.input_task.get())
-        print(self.status.get())
+        if self.input_task.get() == "":
+            self.input_task.focus()
+            return None
         TaskController.add(
             task=self.input_task.get(),
             status=self.status.current(),

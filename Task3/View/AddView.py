@@ -15,6 +15,7 @@ class AddView(Tk):
         self.product.pack()
         self.product_input=ttk.Entry(self.add_frame)
         self.product_input.pack()
+
         self.quantity=ttk.Label(self.add_frame,text="Количество")
         self.quantity.pack()
         self.quantity_input=ttk.Entry(self.add_frame)
@@ -27,10 +28,17 @@ class AddView(Tk):
         self.button.pack()
 
     def add(self):
+        if self.product_input.get() == "":
+            self.product_input.focus()
+            return None
+        if self.quantity_input.get() == "":
+            self.quantity_input.focus()
+            return None
         ShopController.add(
             product=self.product_input.get(),
             quantity=self.quantity_input.get(),
         )
+        self.destroy()
         return True
 
 if __name__ == "__main__":
