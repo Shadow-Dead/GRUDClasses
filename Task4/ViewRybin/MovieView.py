@@ -72,6 +72,7 @@ class FilmsView(Tk):
             title=self.name_film_input.get(),
             year=self.year_film_input.get(),
         )
+        return True
 if __name__ == "__main__":
     window = FilmsView()
     window.mainloop()
