@@ -4,39 +4,32 @@ from tkinter import ttk
 from Task5.Controllers.NewStudentsController import *
 
 class StudentView(Tk):
-    def __init__(self):
+    def __init__(self,student_id):
         super().__init__()
+        self.student_id = student_id
+        self.student = Student.get_by_id(self.student_id)
+
         self.title("Список студентов")
-        self.geometry("1200x600")
-        
+        self.geometry("500x140")
+
         self.base_frame = ttk.Frame(self,borderwidth=1,relief='solid',padding=10)
-        self.base_frame.pack(anchor='center', fill='x', padx=10, pady=10)
-        columns = ('id','name','age','grade')
-        self.tree = ttk.Treeview(self.base_frame,columns=columns,show="headings")
-        self.tree.pack(fill='both',expand=1)
-        self.table()
+        self.base_frame.pack(anchor='center',fill='x',padx=10,pady=10)
+        self.name_label = ttk.Label(self.base_frame,text=f"Студент - {self.student.name}, {self.student.age}")
+        self.name_label.pack()
+        self.grade_cb = ttk.Combobox(self.base_frame,values=['A','B','C','D'],state="readonly")
+        self.grade_cb.pack()
+        self.grade_cb.set(self.student.grade)
+        self.change_button = ttk.Button(self.base_frame,text="Изменить",command=self.update)
+        self.change_button.pack()
+        self.delete_button = ttk.Button(self.base_frame,text="Удалить студента",command=self.delete)
+        self.delete_button.pack()
 
-    def table(self):
-        for i in self.tree.get_children():
-            self.tree.delete(i)
-        lst = []
-        for i in StudentController.get():
-            lst.append(
-                (
-                    i.id,
-                    i.name,
-                    i.age,
-                    i.grade,
-                )
-            )
-        self.tree.heading("id", text="№")
-        self.tree.heading("name", text="Имя")
-        self.tree.heading("age", text="Возраст")
-        self.tree.heading("grade", text="Оценка")
+    def update(self):
+        if self.name_label != "":
+            StudentController.change_grade(self.student_id,self.grade_cb.get())
+            self.destroy()
 
-        for i in lst:
-            self.tree.insert('','end',values=i)
-
-if __name__ == "__main__":
-    window = StudentView()
-    window.mainloop()
+    def delete(self):
+        if self.name_label != "":
+            StudentController.delete(self.student_id)
+            self.destroy()

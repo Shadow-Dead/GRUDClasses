@@ -8,6 +8,9 @@ class StudentController:
     def get(cls):
         return Student.select()
     @classmethod
+    def get_by_id(cls,id):
+        return Student.select().where(Student.id == id).execute()
+    @classmethod
     def change_grade(cls,id, grade):
         Student.update(grade=grade).where(Student.id == id).execute()
     @classmethod
